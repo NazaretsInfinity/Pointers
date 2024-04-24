@@ -1,7 +1,7 @@
 #include<iostream>
 using namespace std;
 
-void exchange(int a, int b);
+void exchange(int& a, int& b);
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -10,7 +10,7 @@ void main()
 	exchange(a, b);
 	cout << a << "\t" << b << endl;
 }
-void exchange(int a, int b)
+void exchange(int& a, int& b)
 {
 	int buffer = a;
 	a = b;
