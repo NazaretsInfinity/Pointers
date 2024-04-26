@@ -1,29 +1,47 @@
 #include<iostream>
 using namespace std;
+#define tab "\t"
+void fillrand(int arr[], const int n);
 void print(const int arr[], int n);
 void main()
 {
 	const int s = 10;
 	int arr[s];
-	int a = 0;
-	int b = 0;
-	int* even = new int[a];
-	int* odd = new int[b];
-	for (int i = 0; i < s; i++)arr[i] = rand()%100;
+	fillrand(arr, s);
 	print(arr, s);
+	int evencount = 0;
+	int oddcount = 0;
+	//count the size of odd and even arays(how many elements)
 	for (int i = 0; i < s; i++)
 	{
-		if (arr[i] % 2 == 0)even[a++] = arr[i];
-		else odd[b++] = arr[i];
+		arr[i] % 2 == 0 ? evencount++: oddcount++;
 	}
-	print(even, a);
-	print(odd, b);
+	cout << evencount << endl;
+	cout << oddcount << endl;
+	//provide min memory for arrays
+	int* even = new int[evencount];
+	int* odd = new int[oddcount];
+	//distribute all elements into the appropriate arrays(copy them)
+	for (int i = 0,j=0,k=0; i < s; i++)
+	{
+	  (arr[i]%2 ? odd[k++] : even[j++]) = arr[i];
+	}
+	print(even, evencount);
+	print(odd, oddcount);
+	delete[] even;
+	delete[] odd;
+	}
+void fillrand(int arr[], const int n)
+{
+	for (int i = 0; i < n; i++)arr[i] = rand() % 100;
 }
 void print(const int arr[], int n)
 {
 	for (int i = 0; i < n; i++)
 	{
-		cout << arr[i] << "\t";
+		cout << arr[i] << tab;
 	}
 	cout << endl;
 }
+
+
