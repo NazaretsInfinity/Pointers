@@ -6,12 +6,12 @@ void main()
 	setlocale(LC_ALL, "Russia");
 #ifdef pointers_basics1
 	int a = 2;
-	int* pa = &a;
+	int *pa = &a;
 	cout << a << endl;
 	cout << &a << endl; //взятие адресса переменной а прямо при выводе
 	cout << pa << endl; //вывод адреса переменной а , хранящегося в указатели pa
 	cout << *pa << endl; //dereference of the 'pa' pointer
-	int* pb;
+	int *pb;
 	int b = 3;
 	pb = &b;
 	cout << pb << endl;
@@ -23,6 +23,6 @@ void main()
 	cout << *arr << endl;
 	for (int i = 0; i < n; i++)
 	{
-		cout << *(arr + i) << "\t";
+		cout << (arr + i) << "\t";
 	}
 }
