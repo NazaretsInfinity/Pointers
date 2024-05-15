@@ -1,11 +1,12 @@
 #include<iostream>
 using namespace std;
+
 #define tab "\t"
 void fillrand(int arr[], int n);
-void DBLfillrand(int **arr, int rows, int cols);
+void fillrand(int **arr, int rows, int cols);
 
 void print(int arr[], int n);
-void DBLprint(int** arr, int rows, int cols);
+void print(int** arr, int rows, int cols);
 
 int* push_back(int arr[], int& n, int v);
 int* push_front(int arr[], int& n, int v);
@@ -21,19 +22,19 @@ void clear(int** arr,int rows);
 
 int** push_row_back(int** arr, int& rows, int cols);
 int** push_row_front(int** arr, int& rows, int cols);
-int** insert_row(int **arr, int &rows, int cols, int nrow);
+int** insert_row(int **arr, int &rows, int cols, int ex);
 
-void pop_row_back(int **arr, int &rows);
-void pop_row_front(int **arr, int &rows, int cols);
-void erase_row(int **arr, int &rows, int cols, int drow);
+int**pop_row_back(int **arr, int &rows);
+int** pop_row_front(int **arr, int &rows, int cols);
+int** erase_row(int **arr, int &rows, int cols, int ex);
 
-int** push_col_back(int** arr, int rows, int &cols);
-int** push_col_front(int** arr, int rows, int &cols);
-int** insert_col(int** arr, int rows, int &cols, int ncol);
+void push_col_back(int** arr, int rows, int &cols);
+void push_col_front(int** arr, int rows, int &cols);
+void insert_col(int** arr, int rows, int &cols, int ex);
 
-int** pop_col_back(int **arr, int rows, int &cols);
-int** pop_col_front(int **arr, int rows, int &cols);
-int** erase_col(int **arr, int rows, int &cols, int dcol);
+void pop_col_back(int **arr, int rows, int &cols);
+void pop_col_front(int **arr, int rows, int &cols);
+void erase_col(int **arr, int rows, int &cols, int ex);
 
 void main()
 {
@@ -71,34 +72,32 @@ void main()
 #endif 
 	int rows, cols;
 	cout << "Enter the size of list: "; cin >> rows >> cols;
-	int** dblarr = allocate(rows, cols);
-	DBLfillrand(dblarr, rows, cols);
-	DBLprint(dblarr, rows, cols);
+	int** arr = allocate(rows, cols);
+	fillrand(arr, rows, cols);
+	print(arr, rows, cols);
+	int ex;
+	//arr = push_row_back(arr, rows,cols);
+	//arr = push_row_front(arr, rows,cols);
+	//cout << "Enter the numb of line to add: "; cin >> ex;
+	//arr = insert_row(arr, rows,cols, ex);
 
-	//dblarr = push_row_back(dblarr, rows,cols);
-	dblarr = push_row_front(dblarr, rows,cols);
-	int nrow, drow, ncol, dcol;
-	//cout << "Enter the numb of line to add: "; cin >> nrow;
-	//dblarr = insert_row(dblarr, rows,cols, nrow);
+	//arr = pop_row_back(arr, rows);
+	//arr = pop_row_front(arr, rows, cols);
 
-	//pop_row_back(dblarr, rows);
-	//pop_row_front(dblarr, rows, cols);
+	//cout << "Enter the numb of line to delete: "; cin >> ex;
+	//arr = erase_row(arr, rows, cols,ex);
 
-	//cout << "Enter the numb of line to delete: "; cin >> drow;
-	//erase_row(dblarr, rows, cols,drow);
+    //push_col_back(arr, rows, cols);
+	//push_col_front(arr, rows, cols);
+	//cout << "Enter the numb of column add: "; cin >> ex;
+	 //insert_col(arr, rows,cols, ex);
 
-    //dblarr = push_col_back(dblarr, rows, cols);
-	//dblarr = push_col_front(dblarr, rows, cols);
-
-	//cout << "Enter the numb of column add: "; cin >> ncol;
-	//dblarr = insert_col(dblarr, rows,cols, ncol);
-
-	//dblarr = pop_col_front(dblarr, rows, cols);
-
-	//cout << "Enter the numb of column to delete: "; cin >> dcol;
-	//	dblarr = erase_col(dblarr, rows, cols,dcol);
-	DBLprint(dblarr, rows, cols);
-	clear(dblarr, rows);
+	//pop_col_back(arr, rows, cols);
+	//pop_col_front(arr, rows, cols);
+	//cout << "Enter the numb of column to delete: "; cin >> ex;
+    //erase_col(arr, rows, cols,ex);
+	print(arr, rows, cols);
+	clear(arr, rows);
 }
 void fillrand(int arr[], int n)
 {
@@ -107,7 +106,7 @@ void fillrand(int arr[], int n)
 		*(arr + i) = rand() % 100;
 	}
 }
-void DBLfillrand(int **arr, int rows, int cols)
+void fillrand(int **arr, int rows, int cols)
 {
 	for (int i = 0; i < rows; i++)
 		for (int j = 0; j < cols; j++)arr[i][j] = rand() % 100;
@@ -120,7 +119,7 @@ void print(int arr[], int n)
 	}
 	cout << endl;
 }
-void DBLprint(int** arr, int rows, int cols)
+void print(int** arr, int rows, int cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
@@ -223,103 +222,113 @@ int** push_row_front(int** arr, int& rows, int cols)
 	rows++;
 	return buff;
 }
-int** insert_row(int** arr, int& rows, int cols, int nrow)
+int** insert_row(int** arr, int& rows, int cols, int ex)
 {
-	int** buff = allocate(++rows, cols);
-	for (int i = 0; i < rows-1; i++)
-		for (int j = 0; j < cols; j++)
-			if (i >= nrow - 1)buff[i + 1][j] = arr[i][j];
-			else buff[i][j] = arr[i][j];
-	for (int j = 0; j < cols; j++)buff[nrow - 1][j] = 0;
-	clear(arr, rows - 1);
+	int** buff = new int* [rows + 1];;
+	for (int i = 0; i < rows; i++)
+			if (i >= ex)buff[i + 1] = arr[i];
+			else buff[i] = arr[i];
+	delete[] arr;
+	rows++;
+	buff[ex] = new int[cols] {};
 	return buff;
 }
 
-void pop_row_back(int** arr, int &rows)
+int** pop_row_back(int** arr, int &rows)
 {
-	delete[] arr[rows-1];
-	rows--;
+	int** buffer = new int* [--rows];
+	for (int i = 0; i < rows; i++)buffer[i] = arr[i];
+	delete[] arr[rows]; //delete the line from memory
+	delete[] arr;
+	return buffer;
 }
-void pop_row_front(int** arr, int& rows, int cols)
+int** pop_row_front(int** arr, int& rows, int cols)
 {
-	for (int i = 0; i < rows-1; i++)
-		for (int j = 0; j < cols; j++)
-		{
-			arr[i][j] = arr[i + 1][j];
-		}
-	pop_row_back(arr, rows);
+	int** buffer = new int* [--rows];
+	for (int i = 0; i < rows; i++)buffer[i] = arr[i+1];
+	delete[] arr[0]; //delete the line from memory
+	delete[] arr;
+	return buffer;
 }
-void erase_row(int** arr, int& rows, int cols, int drow)
+int** erase_row(int** arr, int& rows, int cols, int ex)
 {
-	for (int i = 0; i < rows-1; i++)
-		for (int j = 0; j < cols; j++)
-			if (i >= drow-1)arr[i][j] = arr[i + 1][j];
-	pop_row_back(arr, rows);
+	int** buffer = new int* [--rows];
+	for (int i = 0; i < rows; i++)
+		if (i >= ex)buffer[i] = arr[i + 1];
+		else buffer[i] = arr[i];
+	delete[] arr[ex];
+	delete[] arr;
+	return buffer;
 }
 
-int** push_col_back(int** arr, int rows, int& cols)
+void push_col_back(int** arr, int rows, int& cols)
 {
-	int** buff = allocate(rows, ++cols);
 	for (int i = 0; i < rows; i++)
 	{
-		for (int j = 0; j < cols-1; j++)buff[i][j] = arr[i][j];
-		buff[i][cols-1] = rand() % 100;
+		int* buffer = new int[cols+1];
+		for (int j = 0; j < cols; j++)buffer[j] = arr[i][j];
+		delete[] arr[i];
+		arr[i] = buffer;
 	}
-	clear(arr, rows);
-	return buff;
+	cols++;
 }
-int** push_col_front(int** arr, int rows, int& cols)
+void push_col_front(int** arr, int rows, int& cols)
 {
-	int** buff = allocate(rows, ++cols);
 	for (int i = 0; i < rows; i++)
 	{
-		for (int j = 0; j < cols - 1; j++)buff[i][j+1] = arr[i][j];
-		buff[i][0] = rand() % 100;
+		int* buffer = new int[cols + 1] {};
+		for (int j = 0; j < cols; j++)buffer[j+1] = arr[i][j];
+		delete[] arr[i];
+		arr[i] = buffer;
 	}
-	clear(arr, rows);
-	return buff;
+	cols++;
 }
-int** insert_col(int** arr, int rows, int& cols, int ncol)
+void insert_col(int** arr, int rows, int& cols, int ex)
 {
-	int** buff = allocate(rows, ++cols);
 	for (int i = 0; i < rows; i++)
 	{
+		int* buffer = new int[cols + 1] {};
 		for (int j = 0; j < cols; j++)
-		{ 
-		if (j >= ncol-1)buff[i][j + 1] = arr[i][j];
-		else buff[i][j] = arr[i][j];
-		if (j == ncol-1)buff[i][j] = 0;
-		}
+			if(j>=ex)buffer[j+1] = arr[i][j];
+			else buffer[j] = arr[i][j];
+		delete[] arr[i];
+		arr[i] = buffer;
 	}
-	clear(arr, rows);
-	return buff;
+	cols++;
 }
 
-int** pop_col_back(int** arr, int rows, int& cols)
+void pop_col_back(int** arr, int rows, int& cols)
 {
-	int** buff = allocate(rows, --cols);
 	for (int i = 0; i < rows; i++)
-		for (int j = 0; j < cols; j++)buff[i][j] = arr[i][j];
-	clear(arr, rows);
-	return buff;
+	{
+		int* buffer = new int[cols-1];
+		for (int j = 0; j < cols-1; j++)buffer[j] = arr[i][j];
+		delete[] arr[i];
+		arr[i] = buffer;
+	}
+	cols--;
 }
-int** pop_col_front(int** arr, int rows, int& cols)
+void pop_col_front(int** arr, int rows, int& cols)
 {
-	int** buff = allocate(rows, --cols);
 	for (int i = 0; i < rows; i++)
-		for (int j = 0; j < cols; j++)buff[i][j] = arr[i][j+1];
-	clear(arr, rows);
-	return buff;
+	{
+		int* buffer = new int[cols - 1];
+		for (int j = 0; j < cols - 1; j++)buffer[j] = arr[i][j+1];
+		delete[] arr[i];
+		arr[i] = buffer;
+	}
+	cols--;
 }
-int** erase_col(int** arr, int rows, int& cols, int dcol)
+void erase_col(int** arr, int rows, int& cols, int ex)
 {
-	int** buff = allocate(rows, --cols);
 	for (int i = 0; i < rows; i++)
-		for (int j = 0; j < cols; j++)
-		{
-			if (j >= dcol-1)buff[i][j] = arr[i][j + 1]; 
-			else buff[i][j] = arr[i][j];
-		}
-	clear(arr, rows);
-	return buff;
+	{
+		int* buffer = new int[cols - 1];
+		for (int j = 0; j < cols - 1; j++)
+			if (j >= ex)buffer[j] = arr[i][j + 1];
+			else buffer[j] = arr[i][j];
+		delete[] arr[i];
+		arr[i] = buffer;
+	}
+	cols--;
 }
