@@ -15,7 +15,7 @@ int* pop_back(int arr[], int& n);
 int* pop_front(int arr[], int& n);
 
 int* insert(int arr[], int& n, int indx, int val);
-int* erase(int arr[], int& n, int indx, int val);
+int* erase(int arr[], int& n, int indx);
 
 int** allocate(int const rows,int const cols);
 void clear(int** arr,int rows);
@@ -61,14 +61,15 @@ void main()
 	cout << "Enter the size of list: "; cin >> n;
 	int* arr = new int[n];
 	fillrand(arr, n);
-	int v, indx, indx2;
+	int v, indx;
 	cout << "Enter the numb of el: "; cin >> indx;
 	cout << "Enter the value: "; cin >> v;
 	arr = insert(arr, n, indx, v);
 	print(arr, n);
-	cout << "Enter the numb of el to delete: "; cin >> indx2;
-	arr = erase(arr, n, indx2, v);
+	cout << "Enter the numb of el to delete: "; cin >> indx;
+	arr = erase(arr, n, indx);
 	print(arr, n);
+	delete[] arr;
 #endif 
 	int rows, cols;
 	cout << "Enter the size of list: "; cin >> rows >> cols;
@@ -132,12 +133,12 @@ void print(int** arr, int rows, int cols)
 int* push_back(int arr[], int& n, int v)
 {
 	//create a reverse array with memory we need
-	int* arr1 = new int[n+1];
-	for (int i = 0; i < n; i++)arr1[i] = arr[i];
+	int* buff = new int[n+1];
+	for (int i = 0; i < n; i++)buff[i] = arr[i];
 	//arr1[n] = value;
 	delete[] arr;
 	//change address of old massive with address of new massive arr1
-	arr = arr1;
+	arr = buff;
 	//now we got more place, exactly for 1 new element
 	arr[n] = v;
 	n++;
@@ -180,7 +181,7 @@ int* insert(int arr[], int& n, int indx, int val)
 	buffer[indx] = val;
 	return buffer;
 }
-int* erase(int arr[], int& n, int indx, int val)
+int* erase(int arr[], int& n, int indx)
 {
 	int* buffer = new int[--n];
 	for (int i = 0; i < n; i++)
