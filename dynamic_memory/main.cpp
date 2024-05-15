@@ -2,11 +2,10 @@
 using namespace std;
 #define dynamic_memory
 #define tab "\t"
- 
-template<typename T>
-void fillrand(T arr[], int n);
-template<typename T>
-void fillrand(T **arr, int rows, int cols);
+
+void fillrand(int arr[], int n);
+void fillrand(char arr[], int n);
+void fillrand(int **arr, int rows, int cols);
 
 template<typename T>
 void print(T arr[], int n);
@@ -121,16 +120,19 @@ void main()
 	clear(arr, rows);
 #endif
 }
-template<typename T>
-void fillrand(T arr[], int n)
+
+void fillrand(int arr[], int n)
 {
 	for (int i = 0; i < n; i++)
 	{
 		*(arr + i) = rand() % 100;
 	}
 }
-template<typename T>
-void fillrand(T **arr, int rows, int cols)
+void fillrand(char arr[], int n)
+{
+	for (int i = 0; i < n; i++)	*(arr + i) = rand();
+}
+void fillrand(int **arr, int rows, int cols)
 {
 	for (int i = 0; i < rows; i++)
 		for (int j = 0; j < cols; j++)arr[i][j] = rand() % 100;
