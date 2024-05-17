@@ -1,15 +1,8 @@
-#include<iostream>
-using namespace std;
+#include"stdafx.h"
+#include"fillrand.h"
+#include"print.h"
+#include"print.cpp"
 #define dynamic_memory
-#define tab "\t"
-
-void fillrand(int arr[], int n);
-void fillrand(char arr[], int n);
-void fillrand(double arr[], int n);
-void fillrand(int **arr, int rows, int cols);
-
-template<typename T> void print(T arr[], int n);
-template<typename T> void print(T** arr, int rows, int cols);
 
 template<typename T>T* push_back(T arr[], int& n, T v);
 template<typename T>T* push_front(T arr[], int& n, T v);
@@ -41,7 +34,7 @@ template<typename T>void erase_col(T **arr, int rows, int &cols, int ex);
 
 void main()
 {
-#ifdef dynamic_memory
+#ifdef dynamic_memory1
 	setlocale(LC_ALL, "Russia");
 	int n;
 	cout << "Enter the size of list: "; cin >> n;
@@ -60,13 +53,14 @@ void main()
 	print(arr, n);
 	delete[] arr;
 #endif 
-#ifdef dynamic_memory2
+#ifdef dynamic_memory
 	int n, indx;
 	cout << "Enter the size of list: "; cin >> n;
-	char* arr = new char[n];
+	typedef double DataType;
+	DataType* arr = new DataType[n];
 	fillrand(arr, n);
 	print(arr, n);
-	char v;
+	DataType v;
 	cout << "Enter the numb of el: "; cin >> indx;
 	cout << "Enter the value: "; cin >> v;
 	arr = insert(arr, n, indx, v);
@@ -84,21 +78,23 @@ void main()
 	fillrand(arr, rows, cols);
 	print(arr, rows, cols);
 	int ex;
-	//arr = push_row_back(arr, rows,cols);
-	//arr = push_row_front(arr, rows,cols);
-	//cout << "Enter the numb of line to add: "; cin >> ex;
-	//arr = insert_row(arr, rows,cols, ex);
+	arr = push_row_back(arr, rows,cols);
+	arr = push_row_front(arr, rows,cols);
+	cout << "Enter the numb of line to add: "; cin >> ex;
+	arr = insert_row(arr, rows,cols, ex);
+	print(arr, rows, cols);
 
-	//arr = pop_row_back(arr, rows);
-	//arr = pop_row_front(arr, rows);
+	arr = pop_row_back(arr, rows);
+	arr = pop_row_front(arr, rows);
 
-	//cout << "Enter the numb of line to delete: "; cin >> ex;
-	//arr = erase_row(arr, rows, cols,ex);
+	cout << "Enter the numb of line to delete: "; cin >> ex;
+	arr = erase_row(arr, rows,ex);
+	print(arr, rows, cols);
 
-    //push_col_back(arr, rows, cols);
-	//push_col_front(arr, rows, cols);
-	//cout << "Enter the numb of column add: "; cin >> ex;
-	//insert_col(arr, rows,cols, ex);
+    push_col_back(arr, rows, cols);
+	push_col_front(arr, rows, cols);
+	cout << "Enter the numb of column add: "; cin >> ex;
+	insert_col(arr, rows,cols, ex);
 
 	//pop_col_back(arr, rows, cols);
 	//pop_col_front(arr, rows, cols);
@@ -109,47 +105,6 @@ void main()
 #endif
 }
 
-void fillrand(int arr[], int n)
-{
-	for (int i = 0; i < n; i++)
-	{
-		*(arr + i) = rand() % 100;
-	}
-}
-void fillrand(char arr[], int n)
-{
-	for (int i = 0; i < n; i++)	*(arr + i) = rand();
-}
-void fillrand(double arr[], int n)
-{
-	for (int i = 0; i < n; i++)
-	{
-		*(arr + i) = rand()&100;
-		arr[i] /= 100;
-	}
-}
-void fillrand(int **arr, int rows, int cols)
-{
-	for (int i = 0; i < rows; i++)
-		for (int j = 0; j < cols; j++)arr[i][j] = rand() % 100;
-}
-template<typename T>void print(T arr[], int n)
-{
-	for (int i = 0; i < n; i++)
-	{
-		cout << arr[i] << tab;
-	}
-	cout << endl;
-}
-template<typename T>void print(T** arr, int rows, int cols)
-{
-	for (int i = 0; i < rows; i++)
-	{
-		for (int j = 0; j < cols; j++)cout << arr[i][j] << " ";
-		cout << endl;
-	}
-	cout << endl;
-}
 
 template<typename T>T* push_back(T arr[], int& n, T v)
 {

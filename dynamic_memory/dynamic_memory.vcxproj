@@ -127,7 +127,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="fillrand.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="print.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="fillrand.h" />
+    <ClInclude Include="print.h" />
+    <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
