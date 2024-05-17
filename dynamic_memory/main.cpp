@@ -7,6 +7,7 @@ void fillrand(int arr[], int n);
 void fillrand(char arr[], int n);
 void fillrand(double arr[], int n);
 void fillrand(int **arr, int rows, int cols);
+void fillrand(double **arr, int rows, int cols);
 
 template<typename T> void print(T arr[], int n);
 template<typename T> void print(T** arr, int rows, int cols);
@@ -80,26 +81,28 @@ void main()
 #ifdef dynamic_memory
 	int rows, cols;
 	cout << "Enter the size of list: "; cin >> rows >> cols;
-	typedef int DataType;
+	typedef double DataType;
 	DataType**arr = allocate<DataType>(rows, cols);
 	fillrand(arr, rows, cols);
 	print(arr, rows, cols);
 	int ex;
 	//arr = push_row_back(arr, rows,cols);
 	//arr = push_row_front(arr, rows,cols);
-	cout << "Enter the numb of line to add: "; cin >> ex;
-	arr = insert_row(arr, rows,cols, ex);
+	//print(arr, rows, cols);
+	//cout << "Enter the numb of line to add: "; cin >> ex;
+	//arr = insert_row(arr, rows,cols, ex);
 
 	//arr = pop_row_back(arr, rows);
 	//arr = pop_row_front(arr, rows, cols);
+	//print(arr, rows, cols);
 
-	//cout << "Enter the numb of line to delete: "; cin >> ex;
-	//arr = erase_row(arr, rows, cols,ex);
+    //cout << "Enter the numb of line to delete: "; cin >> ex;
+    //arr = erase_row(arr, rows, cols,ex);
 
     //push_col_back(arr, rows, cols);
 	//push_col_front(arr, rows, cols);
-	//cout << "Enter the numb of column add: "; cin >> ex;
-	//insert_col(arr, rows,cols, ex);
+	cout << "Enter the numb of column add: "; cin >> ex;
+	insert_col(arr, rows,cols, ex);
 
 	//pop_col_back(arr, rows, cols);
 	//pop_col_front(arr, rows, cols);
@@ -134,6 +137,15 @@ void fillrand(int **arr, int rows, int cols)
 	for (int i = 0; i < rows; i++)
 		for (int j = 0; j < cols; j++)arr[i][j] = rand() % 100;
 }
+void fillrand(double** arr, int rows, int cols)
+{
+	for (int i = 0; i < rows; i++)
+		for (int j = 0; j < cols; j++)
+		{
+			arr[i][j] = rand() % 100;
+			arr[i][j] /= 100;
+		}
+}
 template<typename T>void print(T arr[], int n)
 {
 	for (int i = 0; i < n; i++)
@@ -156,15 +168,14 @@ template<typename T>T* push_back(T arr[], int& n, T v)
 {
 	//create a reverse array with memory we need
 	T* arr1 = new T[n+1];
+	//copy elements
 	for (int i = 0; i < n; i++)arr1[i] = arr[i];
 	//arr1[n] = value;
 	delete[] arr;
-	//change address of old massive with address of new massive arr1
-	arr = arr1;
-	//now we got more place, exactly for 1 new element
-	arr[n] = v;
+	//add new el
+	arr1[n] = v;
 	n++;
-	return arr;
+	return arr1;
 }
 template<typename T>T* push_front(T arr[], int& n, T v)
 {
@@ -220,67 +231,40 @@ template<typename T> void clear(T** arr,int rows)
 
 template<typename T> T** push_row_back(T** arr, int& rows, int cols)
 {
-	T** buff = new T* [rows + 1];
-	for (int i = 0; i < rows; i++)buff[i] = arr[i];
-	delete[] arr;
-	buff[rows] = new T[cols] {};
-	rows++;
-	return buff;
+	return push_back(arr, rows, new T[cols]{});
 }
 template<typename T>T** push_row_front(T** arr, int& rows, int cols)
 {
-	T** buff = new T* [rows + 1];
-	for (int i = 0; i < rows; i++)buff[i+1] = arr[i];
-	delete[] arr;
-	buff[0] = new T[cols] {};
-	rows++;
-	return buff;
+	return push_front(arr, rows, new T[cols]{});
 }
 template<typename T> T** insert_row(T** arr, int& rows, int cols, int ex)
 {
-	T** buff = new T* [rows + 1];;
-	for (int i = 0; i < rows; i++)
-		(i < ex ? buff[i] : buff[i + 1]) = arr[i];
-	delete[] arr;
-	rows++;
-	buff[ex] = new int[cols] {};
-	return buff;
+	return insert(arr, rows, ex, new T[cols]{});
 }
 
 template<typename T>T** pop_row_back(T** arr, int &rows)
 {
-	T** buffer = new T* [--rows];
-	for (int i = 0; i < rows; i++)buffer[i] = arr[i];
-	delete[] arr[rows]; //delete the line from memory
-	delete[] arr;
-	return buffer;
+	delete[] arr[rows-1]; //delete the line from memory
+	return pop_back(arr, rows);
 }
 template<typename T>T** pop_row_front(T** arr, int& rows, int cols)
 {
-	T** buffer = new T* [--rows];
-	for (int i = 0; i < rows; i++)buffer[i] = arr[i+1];
-	delete[] arr[0]; //delete the line from memory
-	delete[] arr;
-	return buffer;
+	delete[] arr[0]; 
+	return pop_front(arr, rows);
 }
 template<typename T>T** erase_row(T** arr, int& rows, int cols, int ex)
 {
-	T** buffer = new T* [--rows];
-	for (int i = 0; i < rows; i++)
-		buffer[i] = (i < ex ? arr[i] : arr[i + 1]);
 	delete[] arr[ex];
-	delete[] arr;
-	return buffer;
+	return erase(arr, rows, ex);
 }
 
 template<typename T>void push_col_back(T** arr, int rows, int& cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		int* buffer = new int[cols+1];
-		for (int j = 0; j < cols; j++)buffer[j] = arr[i][j];
-		delete[] arr[i];
-		arr[i] = buffer;
+		//T() - default values ( usually 0)
+		arr[i]= push_back(arr[i], cols, T());
+		cols--;
 	}
 	cols++;
 }
@@ -288,10 +272,8 @@ template<typename T>void push_col_front(T** arr, int rows, int& cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		int* buffer = new int[cols + 1] {};
-		for (int j = 0; j < cols; j++)buffer[j+1] = arr[i][j];
-		delete[] arr[i];
-		arr[i] = buffer;
+		arr[i] = push_front(arr[i], cols, T());
+		cols--;
 	}
 	cols++;
 }
@@ -299,11 +281,8 @@ template<typename T>void insert_col(T** arr, int rows, int& cols, int ex)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		T* buffer = new T[cols + 1] {};
-		for (int j = 0; j < cols; j++)
-			(j < ex ? buffer[j] : buffer[j + 1]) = arr[i][j];
-		delete[] arr[i];
-		arr[i] = buffer;
+		arr[i] = insert(arr[i], cols,ex, T());
+		cols--;
 	}
 	cols++;
 }
