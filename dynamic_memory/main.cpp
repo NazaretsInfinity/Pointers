@@ -20,7 +20,7 @@ template<typename T>T* pop_front(T arr[], int& n);
 template<typename T>T* insert(T arr[], int& n, int indx, T val);
 template<typename T>T* erase(T arr[], int& n, int indx);
 
-int** allocate(int const rows, int const cols);
+template<typename T>T** allocate(int const rows, int const cols);
 template<typename T> void clear(T** arr,int rows);
 
 template<typename T> T** push_row_back(T** arr, int& rows, int cols);
@@ -60,7 +60,7 @@ void main()
 	print(arr, n);
 	delete[] arr;
 #endif 
-#ifdef dynamic_memory
+#ifdef dynamic_memory2
 	int n, indx;
 	cout << "Enter the size of list: "; cin >> n;
 	char* arr = new char[n];
@@ -77,10 +77,11 @@ void main()
 	print(arr, n);
 	delete[] arr;
 #endif 
-#ifdef dynamic_memory3
+#ifdef dynamic_memory
 	int rows, cols;
 	cout << "Enter the size of list: "; cin >> rows >> cols;
-	int**arr = allocate(rows, cols);
+	typedef int DataType;
+	DataType**arr = allocate<DataType>(rows, cols);
 	fillrand(arr, rows, cols);
 	print(arr, rows, cols);
 	int ex;
@@ -205,10 +206,10 @@ template<typename T>T* erase(T arr[], int& n, int indx)
 	delete[] arr;
 	return buffer;
 }
-int** allocate(int const rows, int const cols)
+template<typename T>T** allocate(int const rows, int const cols)
 {
-	int** arr = new int*[rows];
-	for (int i = 0; i < rows; i++)arr[i] = new int[cols];
+	T** arr = new T*[rows];
+	for (int i = 0; i < rows; i++)arr[i] = new T[cols];
 	return arr;
 }
 template<typename T> void clear(T** arr,int rows)
