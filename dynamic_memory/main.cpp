@@ -78,10 +78,10 @@ void main()
 	print(arr, n);
 	delete[] arr;
 #endif 
-#ifdef dynamic_memory
+#ifdef dynamic_memory3
 	int rows, cols;
 	cout << "Enter the size of list: "; cin >> rows >> cols;
-	typedef double DataType;
+	typedef int DataType;
 	DataType**arr = allocate<DataType>(rows, cols);
 	fillrand(arr, rows, cols);
 	print(arr, rows, cols);
@@ -101,13 +101,13 @@ void main()
 
     //push_col_back(arr, rows, cols);
 	//push_col_front(arr, rows, cols);
-	cout << "Enter the numb of column add: "; cin >> ex;
-	insert_col(arr, rows,cols, ex);
+	//cout << "Enter the numb of column add: "; cin >> ex;
+	//insert_col(arr, rows,cols, ex);
 
 	//pop_col_back(arr, rows, cols);
 	//pop_col_front(arr, rows, cols);
-	//cout << "Enter the numb of column to delete: "; cin >> ex;
-    //erase_col(arr, rows, cols,ex);
+	cout << "Enter the numb of column to delete: "; cin >> ex;
+    erase_col(arr, rows, cols,ex);
 	print(arr, rows, cols);
 	clear(arr, rows);
 #endif
@@ -291,10 +291,8 @@ template<typename T>void pop_col_back(T** arr, int rows, int& cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		int* buffer = new int[cols-1];
-		for (int j = 0; j < cols-1; j++)buffer[j] = arr[i][j];
-		delete[] arr[i];
-		arr[i] = buffer;
+		arr[i] = pop_back(arr[i], cols);
+		cols++;
 	}
 	cols--;
 }
@@ -302,10 +300,8 @@ template<typename T>void pop_col_front(T** arr, int rows, int& cols)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		int* buffer = new int[cols - 1];
-		for (int j = 0; j < cols - 1; j++)buffer[j] = arr[i][j+1];
-		delete[] arr[i];
-		arr[i] = buffer;
+		arr[i] = pop_front(arr[i], cols);
+		cols++;
 	}
 	cols--;
 }
@@ -313,11 +309,8 @@ template<typename T>void erase_col(T** arr, int rows, int& cols, int ex)
 {
 	for (int i = 0; i < rows; i++)
 	{
-		int* buffer = new int[cols - 1];
-		for (int j = 0; j < cols - 1; j++)
-			buffer[j] = (j < ex ? arr[i][j] : arr[i][j + 1]);
-		delete[] arr[i];
-		arr[i] = buffer;
+		arr[i]= erase(arr[i], cols, ex);
+		cols++;
 	}
 	cols--;
 }
